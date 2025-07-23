@@ -51,6 +51,21 @@ class AuthRepository {
     return rows[0] as User | undefined;
   }
 
+  // The R of CRUD - Read operation (for login authentication)
+  async findByEmail(email: string) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM users WHERE email = ?",
+      [email],
+    );
+
+    return rows[0] as User | undefined;
+  }
+
+  // Future CRUD operations for authentication system:
+
+  // The R of CRUD - Read by ID (for future login/profile features)
+  // async findById(id: number) { ... }
+
   // The U of CRUD - Update operation (for future profile updates)
   // async update(id: number, userData: Partial<User>) { ... }
 

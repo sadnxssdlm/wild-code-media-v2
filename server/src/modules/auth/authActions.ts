@@ -12,6 +12,17 @@ const hashPassword = async (password: string): Promise<string> => {
   });
 };
 
+const verifyPassword = async (
+  password: string,
+  hash: string,
+): Promise<boolean> => {
+  try {
+    return await argon2.verify(hash, password);
+  } catch (err) {
+    return false;
+  }
+};
+
 const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
@@ -22,6 +33,7 @@ const isValidPassword = (password: string): boolean => {
   return passwordRegex.test(password);
 };
 
+// The A of BREAD - Add (Create) operation
 const register: RequestHandler = async (req, res, next) => {
   try {
     const { username, email, password, first_name, last_name, avatar } =
@@ -109,10 +121,61 @@ const register: RequestHandler = async (req, res, next) => {
 };
 
 // Authentication-specific operations:
-// TODO: Login operation
-// const login: RequestHandler = async (req, res, next) => { ... }
+const login: RequestHandler = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({
+        error: "Missing required fields",
+        message: "Email and password are required",
+      });
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      res.status(400).json({
+        error: "Invalid email format",
+        message: "Please provide a valid email address",
+      });
+      return;
+    }
+
+    const user = await authRepository.findByEmail(email.toLowerCase().trim());
+    if (!user) {
+      res.status(401).json({
+        error: "Invalid credentials",
+        message: "Invalid email or password",
+      });
+      return;
+    }
+
+    const isPasswordValid = await verifyPassword(password, user.password_hash);
+    if (!isPasswordValid) {
+      res.status(401).json({
+        error: "Invalid credentials",
+        message: "Invalid email or password",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        avatar: user.avatar,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 // TODO: Logout operation
 // const logout: RequestHandler = async (req, res, next) => { ... }
 
-export default { register };
+export default { register, login };
