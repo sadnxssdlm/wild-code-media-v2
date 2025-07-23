@@ -1,6 +1,6 @@
 import databaseClient from "../../../database/client";
 
-import type { Rows } from "../../../database/client";
+import type { Result, Rows } from "../../../database/client";
 
 type Post = {
   id: number;
@@ -11,6 +11,14 @@ type Post = {
   user_id: number;
   created_at: Date;
   updated_at: Date;
+};
+
+type CreatePostData = {
+  title: string;
+  content?: string;
+  image?: string;
+  code_snippet?: string;
+  user_id: number;
 };
 
 type PostWithAuthor = {
@@ -98,11 +106,24 @@ class PostRepository {
   // async update(id: number, postData: Partial<Post>): Promise<void> { ... }
 
   // The A of BREAD - Add operation (Create new post)
-  // async create(postData: CreatePostData): Promise<number> { ... }
+  async create(postData: CreatePostData): Promise<number> {
+    const [result] = await databaseClient.query<Result>(
+      "INSERT INTO posts (title, content, image, code_snippet, user_id) VALUES (?, ?, ?, ?, ?)",
+      [
+        postData.title,
+        postData.content || null,
+        postData.image || null,
+        postData.code_snippet || null,
+        postData.user_id,
+      ],
+    );
+
+    return result.insertId;
+  }
 
   // The D of BREAD - Delete operation (Remove post)
   // async delete(id: number): Promise<void> { ... }
 }
 
 export default new PostRepository();
-export type { Post, PostWithAuthor };
+export type { Post, PostWithAuthor, CreatePostData };

@@ -16,6 +16,7 @@ router.post("/api/auth/login", authActions.login);
 import postActions from "./modules/post/postActions";
 
 router.get("/api/posts", postActions.browse);
+router.post("/api/posts", postActions.add);
 
 /* ************************************************************************* */
 
