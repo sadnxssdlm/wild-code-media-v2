@@ -61,10 +61,17 @@ class AuthRepository {
     return rows[0] as User | undefined;
   }
 
-  // Future CRUD operations for authentication system:
+  // The R of CRUD - Read by ID (for post validation and profile features)
+  async findById(id: number) {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM users WHERE id = ?",
+      [id],
+    );
 
-  // The R of CRUD - Read by ID (for future login/profile features)
-  // async findById(id: number) { ... }
+    return rows[0] as User | undefined;
+  }
+
+  // Future CRUD operations for authentication system:
 
   // The U of CRUD - Update operation (for future profile updates)
   // async update(id: number, userData: Partial<User>) { ... }
