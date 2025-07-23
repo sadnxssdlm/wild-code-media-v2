@@ -6,6 +6,11 @@ const router = express.Router();
 // Define Your API Routes Here
 /* ************************************************************************* */
 
+// Define auth-related routes
+import authActions from "./modules/auth/authActions";
+
+router.post("/api/auth/register", authActions.register);
+
 // Define item-related routes
 import itemActions from "./modules/item/itemActions";
 
