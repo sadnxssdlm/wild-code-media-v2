@@ -12,6 +12,11 @@ import authActions from "./modules/auth/authActions";
 router.post("/api/auth/register", authActions.register);
 router.post("/api/auth/login", authActions.login);
 
+// Define post-related routes
+import postActions from "./modules/post/postActions";
+
+router.get("/api/posts", postActions.browse);
+
 /* ************************************************************************* */
 
 export default router;
