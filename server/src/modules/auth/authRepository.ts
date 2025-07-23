@@ -51,7 +51,6 @@ class AuthRepository {
     return rows[0] as User | undefined;
   }
 
-
   // The U of CRUD - Update operation (for future profile updates)
   // async update(id: number, userData: Partial<User>) { ... }
 
