@@ -1,5 +1,5 @@
 .navigation {
-  background: linear-gradient(90deg, #b72193 0%, #592559 100%);
+  background: var(--background-gradient);
   padding: 0;
   margin: 0;
   position: sticky;
@@ -51,7 +51,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: linear-gradient(180deg, #b72193 0%, #592559 100%);
+  background: var(--background-gradient);
   flex-direction: column;
   padding: 1rem 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

@@ -1,0 +1,145 @@
+.wilder-message-outer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  width: 100vw;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.wilder-message-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 2.2rem;
+  font-style: italic;
+  color: #fff;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.wilder-message-title-text {
+  color: #fff;
+  font-style: italic;
+  font-weight: 700;
+}
+
+.wilder-message-quote-gradient {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: var(--background-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0.2em;
+  user-select: none;
+}
+
+.wilder-message-gradient-border {
+  background: var(--background-gradient);
+  border-radius: 40px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 950px;
+  min-width: 320px;
+  width: 80vw;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.wilder-message-box {
+  background: #272727;
+  border-radius: 36px;
+  padding: 3.2rem 3.5rem 2.5rem 3.5rem;
+  margin: 7px;
+  width: 100%;
+  min-width: 0;
+  color: #fff;
+  position: relative;
+  box-shadow: none;
+  transition: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  box-sizing: border-box;
+}
+
+.wilder-message-content {
+  font-size: 1.7rem;
+  text-align: center;
+  min-height: 80px;
+  margin-bottom: 1.5rem;
+  font-family: "Inter", sans-serif;
+  letter-spacing: 0.01em;
+  line-height: 1.8;
+  word-break: break-word;
+  color: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.wilder-message-text {
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.wilder-message-cursor {
+  color: #b72193;
+  font-weight: bold;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.wilder-message-author {
+  text-align: right;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  opacity: 1;
+  margin-top: 0.5rem;
+  width: 100%;
+  align-self: flex-end;
+}
+
+@media (max-width: 1000px) {
+  .wilder-message-gradient-border {
+    max-width: 98vw;
+    width: 98vw;
+    min-width: 0;
+  }
+
+  .wilder-message-box {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+    max-width: 98vw;
+  }
+
+  .wilder-message-content {
+    font-size: 1.08rem;
+  }
+
+  .wilder-message-title {
+    font-size: 1.1rem;
+  }
+}

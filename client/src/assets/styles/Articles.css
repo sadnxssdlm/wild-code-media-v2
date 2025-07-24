@@ -8,13 +8,13 @@
 .articles-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4rem;
+  gap: 6rem;
   max-width: 1500px;
   margin: 0 auto;
 }
 
 .article-card {
-  background: linear-gradient(135deg, #b72193 0%, #592559 100%);
+  background: var(--background-gradient);
   padding: 9px;
   border-radius: 25px;
   cursor: grab;
