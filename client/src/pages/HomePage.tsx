@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Articles from "../components/Articles/Articles";
 import Hero from "../components/Hero/Hero";
 import Posts from "../components/Posts/Posts";
+import WilderMessages from "../components/WilderMessages";
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <Hero />
       <Articles />
       <Posts />
+      <WilderMessages />
     </motion.div>
   );
 };
