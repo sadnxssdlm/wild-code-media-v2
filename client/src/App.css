@@ -14,7 +14,7 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
-  background-color: #2e2d2d;
+  background-color: #252525;
 }
 
 #root {
@@ -24,7 +24,7 @@ body {
 }
 
 main {
-  padding: 1rem 2rem;
+  padding: 0;
   max-width: 1200px;
   margin: 0 auto;
 }
