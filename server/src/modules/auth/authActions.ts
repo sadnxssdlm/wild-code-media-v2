@@ -1,6 +1,7 @@
 import argon2 from "argon2";
 import type { RequestHandler } from "express";
 
+import { generateToken } from "../../middlewares/auth";
 import authRepository from "./authRepository";
 
 const hashPassword = async (password: string): Promise<string> => {
@@ -23,54 +24,10 @@ const verifyPassword = async (
   }
 };
 
-const isValidEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-const isValidPassword = (password: string): boolean => {
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
-  return passwordRegex.test(password);
-};
-
-// The A of BREAD - Add (Create) operation
 const register: RequestHandler = async (req, res, next) => {
   try {
     const { username, email, password, first_name, last_name, avatar } =
       req.body;
-
-    if (!username || !email || !password) {
-      res.status(400).json({
-        error: "Missing required fields",
-        message: "Username, email, and password are required",
-      });
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      res.status(400).json({
-        error: "Invalid email format",
-        message: "Please provide a valid email address",
-      });
-      return;
-    }
-
-    if (!isValidPassword(password)) {
-      res.status(400).json({
-        error: "Weak password",
-        message:
-          "Password must be at least 8 characters long and contain uppercase, lowercase, and numbers",
-      });
-      return;
-    }
-
-    if (username.length < 3 || username.length > 50) {
-      res.status(400).json({
-        error: "Invalid username",
-        message: "Username must be between 3 and 50 characters",
-      });
-      return;
-    }
 
     const existingUser = await authRepository.findByEmailOrUsername(
       email,
@@ -104,6 +61,12 @@ const register: RequestHandler = async (req, res, next) => {
 
     const insertId = await authRepository.create(userData);
 
+    const token = generateToken({
+      id: insertId,
+      email: userData.email,
+      username: userData.username,
+    });
+
     res.status(201).json({
       message: "User registered successfully",
       user: {
@@ -114,32 +77,16 @@ const register: RequestHandler = async (req, res, next) => {
         last_name: userData.last_name,
         avatar: userData.avatar,
       },
+      token,
     });
   } catch (err) {
     next(err);
   }
 };
 
-// Authentication-specific operations:
 const login: RequestHandler = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      res.status(400).json({
-        error: "Missing required fields",
-        message: "Email and password are required",
-      });
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      res.status(400).json({
-        error: "Invalid email format",
-        message: "Please provide a valid email address",
-      });
-      return;
-    }
 
     const user = await authRepository.findByEmail(email.toLowerCase().trim());
     if (!user) {
@@ -159,6 +106,12 @@ const login: RequestHandler = async (req, res, next) => {
       return;
     }
 
+    const token = generateToken({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    });
+
     res.status(200).json({
       message: "Login successful",
       user: {
@@ -169,13 +122,11 @@ const login: RequestHandler = async (req, res, next) => {
         last_name: user.last_name,
         avatar: user.avatar,
       },
+      token,
     });
   } catch (err) {
     next(err);
   }
 };
-
-// TODO: Logout operation
-// const logout: RequestHandler = async (req, res, next) => { ... }
 
 export default { register, login };
