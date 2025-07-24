@@ -1,11 +1,11 @@
-/* Mobile First Design */
 .navigation {
   background: linear-gradient(90deg, #b72193 0%, #592559 100%);
   padding: 0;
+  margin: 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .nav-container {
@@ -13,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 1rem 0 0.5rem;
-  height: 60px;
+  height: 45px;
   position: relative;
 }
 
@@ -23,16 +23,14 @@
 }
 
 .logo-img {
-  height: 50px;
+  height: 35px;
   width: auto;
 }
 
-/* Mobile: Hide desktop navigation by default */
 .desktop-nav {
   display: none;
 }
 
-/* Mobile: Show burger menu by default */
 .burger-menu {
   display: block;
   background: none;
@@ -47,7 +45,6 @@
   font-size: 1.8rem !important;
 }
 
-/* Mobile Menu */
 .mobile-nav {
   display: none;
   position: absolute;
@@ -87,7 +84,6 @@
   height: 1.2rem;
 }
 
-/* Desktop (768px and up) */
 @media (min-width: 769px) {
   .nav-container {
     padding: 0 2rem 0 1rem;
@@ -98,12 +94,10 @@
     height: 60px;
   }
 
-  /* Desktop: Hide burger menu */
   .burger-menu {
     display: none;
   }
 
-  /* Desktop: Show navigation links */
   .desktop-nav {
     display: flex;
     gap: 2rem;
