@@ -1,0 +1,124 @@
+/* Mobile First Design */
+.navigation {
+  background: linear-gradient(90deg, #b72193 0%, #592559 100%);
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem 0 0.5rem;
+  height: 60px;
+  position: relative;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 50px;
+  width: auto;
+}
+
+/* Mobile: Hide desktop navigation by default */
+.desktop-nav {
+  display: none;
+}
+
+/* Mobile: Show burger menu by default */
+.burger-menu {
+  display: block;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.burger-menu svg {
+  font-size: 1.8rem !important;
+}
+
+/* Mobile Menu */
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #b72193 0%, #592559 100%);
+  flex-direction: column;
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav.open {
+  display: flex;
+}
+
+.mobile-nav .nav-link {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  justify-content: flex-start;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobile-nav .nav-link:last-child {
+  border-bottom: none;
+}
+
+.nav-icon {
+  font-size: 1.2rem !important;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* Desktop (768px and up) */
+@media (min-width: 769px) {
+  .nav-container {
+    padding: 0 2rem 0 1rem;
+    height: 70px;
+  }
+
+  .logo-img {
+    height: 60px;
+  }
+
+  /* Desktop: Hide burger menu */
+  .burger-menu {
+    display: none;
+  }
+
+  /* Desktop: Show navigation links */
+  .desktop-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .desktop-nav .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
