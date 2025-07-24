@@ -1,65 +1,16 @@
 import databaseClient from "../../../database/client";
-
 import type { Result, Rows } from "../../../database/client";
-
-type Post = {
-  id: number;
-  title: string;
-  content?: string;
-  image?: string;
-  code_snippet?: string;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
-};
-
-type CreatePostData = {
-  title: string;
-  content?: string;
-  image?: string;
-  code_snippet?: string;
-  user_id: number;
-};
-
-type PostWithAuthor = {
-  id: number;
-  title: string;
-  content?: string;
-  image?: string;
-  code_snippet?: string;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  author: {
-    id: number;
-    username: string;
-    first_name?: string;
-    last_name?: string;
-    avatar?: string;
-  };
-};
-
-type PostWithAuthorRaw = {
-  id: number;
-  title: string;
-  content?: string;
-  image?: string;
-  code_snippet?: string;
-  user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  author_id: number;
-  author_username: string;
-  author_first_name?: string;
-  author_last_name?: string;
-  author_avatar?: string;
-};
+import type {
+  CreatePostData,
+  Post,
+  PostWithAuthor,
+  PostWithAuthorRaw,
+} from "../../types/express";
 
 class PostRepository {
-  // The B of BREAD - Browse operation (Read All posts with author info)
   async findAllWithAuthors(): Promise<PostWithAuthor[]> {
     const [rows] = await databaseClient.query<Rows>(
-      `SELECT 
+      `SELECT
         p.id,
         p.title,
         p.content,
@@ -97,15 +48,28 @@ class PostRepository {
     }));
   }
 
-  // Future CRUD operations for posts:
+  async findById(id: number): Promise<Post | undefined> {
+    const [rows] = await databaseClient.query<Rows>(
+      "SELECT * FROM posts WHERE id = ?",
+      [id],
+    );
 
-  // The R of BREAD - Read operation (Get single post by ID)
-  // async findById(id: number): Promise<Post | undefined> { ... }
+    return rows[0] as Post | undefined;
+  }
 
-  // The E of BREAD - Edit operation (Update post)
-  // async update(id: number, postData: Partial<Post>): Promise<void> { ... }
+  async update(id: number, postData: Partial<CreatePostData>): Promise<void> {
+    await databaseClient.query<Result>(
+      "UPDATE posts SET title = ?, content = ?, image = ?, code_snippet = ? WHERE id = ?",
+      [
+        postData.title,
+        postData.content || null,
+        postData.image || null,
+        postData.code_snippet || null,
+        id,
+      ],
+    );
+  }
 
-  // The A of BREAD - Add operation (Create new post)
   async create(postData: CreatePostData): Promise<number> {
     const [result] = await databaseClient.query<Result>(
       "INSERT INTO posts (title, content, image, code_snippet, user_id) VALUES (?, ?, ?, ?, ?)",
@@ -120,10 +84,9 @@ class PostRepository {
 
     return result.insertId;
   }
-
-  // The D of BREAD - Delete operation (Remove post)
-  // async delete(id: number): Promise<void> { ... }
+  async delete(id: number): Promise<void> {
+    await databaseClient.query<Result>("DELETE FROM posts WHERE id = ?", [id]);
+  }
 }
 
 export default new PostRepository();
-export type { Post, PostWithAuthor, CreatePostData };
