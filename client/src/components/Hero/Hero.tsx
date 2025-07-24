@@ -1,4 +1,4 @@
-import "../assets/styles/Hero.css";
+import "../../assets/styles/Hero.css";
 import { motion } from "framer-motion";
 
 const Hero = () => {
