@@ -5,7 +5,7 @@ import "../../assets/styles/Navigation.css";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
+
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 
 const Navigation = () => {
@@ -53,22 +53,9 @@ const Navigation = () => {
             </motion.div>
             Accueil
           </motion.a>
+
           <motion.a
-            href="/about"
-            className="nav-link"
-            whileHover={{ scale: 1.05, y: -2 }}
-            transition={{ duration: 0.2 }}
-          >
-            <motion.div
-              whileHover={{ rotate: 15 }}
-              transition={{ duration: 0.2 }}
-            >
-              <InfoRoundedIcon className="nav-icon" />
-            </motion.div>
-            A propos
-          </motion.a>
-          <motion.a
-            href="/signin"
+            href="/login"
             className="nav-link nav-signin"
             whileHover={{ scale: 1.05, y: -2 }}
             transition={{ duration: 0.2 }}
@@ -139,19 +126,9 @@ const Navigation = () => {
                 <HomeRoundedIcon className="nav-icon" />
                 Accueil
               </motion.a>
+
               <motion.a
-                href="/about"
-                className="nav-link"
-                onClick={toggleMenu}
-                initial={{ x: -30, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                whileHover={{ x: 10 }}
-              >
-                <InfoRoundedIcon className="nav-icon" />A propos
-              </motion.a>
-              <motion.a
-                href="/signin"
+                href="/login"
                 className="nav-link nav-signin"
                 onClick={toggleMenu}
                 initial={{ x: -30, opacity: 0 }}

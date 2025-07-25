@@ -1,138 +1,109 @@
-import type { RequestHandler } from "express";
-
+import type { Request, Response } from "express";
 import postRepository from "./postRepository";
 
-// The B of BREAD - Browse operation (Read All)
-const browse: RequestHandler = async (req, res, next) => {
+const browse = async (req: Request, res: Response) => {
   try {
-    const posts = await postRepository.findAllWithAuthors();
-
-    res.status(200).json({
-      message: "Posts received successfully",
+    const posts = await postRepository.readAll();
+    res.json({
       data: posts,
-      count: posts.length,
+      message: "Posts récupérés avec succès",
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des posts:", error);
+    res.status(500).json({ error: "Erreur interne du serveur" });
   }
 };
 
-// Future BREAD operations for posts management:
-
-// The R of BREAD - Read operation (Get single post)
-const read: RequestHandler = async (req, res, next) => {
+const read = async (req: Request, res: Response) => {
   try {
-    const postId = Number(req.params.id);
-    const post = await postRepository.findById(postId);
+    const postId = Number.parseInt(req.params.id, 10);
+    const post = await postRepository.read(postId);
 
     if (!post) {
-      res.status(404).json({
-        error: "Post not found",
-        message: "The requested post does not exist",
-      });
+      res.status(404).json({ error: "Post non trouvé" });
       return;
     }
 
-    res.status(200).json({
-      message: "Post found successfully",
+    res.json({
       data: post,
+      message: "Post récupéré avec succès",
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error("Erreur lors de la récupération du post:", error);
+    res.status(500).json({ error: "Erreur interne du serveur" });
   }
 };
 
-// The E of BREAD - Edit operation (Update post)
-const edit: RequestHandler = async (req, res, next) => {
+const edit = async (req: Request, res: Response) => {
   try {
-    const postId = Number(req.params.validatedId || req.params.id);
+    const postId = Number.parseInt(req.params.id, 10);
     const { title, content, image, code_snippet } = req.body;
 
-    const updateData = {
-      title: title?.trim(),
-      content: content?.trim(),
-      image: image?.trim(),
-      code_snippet: code_snippet?.trim(),
-    };
-
-    await postRepository.update(postId, updateData);
-
-    res.status(200).json({
-      message: "Post updated successfully",
-      data: { id: postId, ...updateData },
+    const success = await postRepository.update(postId, {
+      title,
+      content,
+      image,
+      code_snippet,
     });
-  } catch (err) {
-    next(err);
-  }
-};
 
-// The A of BREAD - Add operation (Create post)
-const add: RequestHandler = async (req, res, next) => {
-  try {
-    if (!req.user) {
-      res.status(401).json({
-        error: "Authentication required",
-        message: "You must be logged in to create a post",
-      });
+    if (!success) {
+      res.status(404).json({ error: "Post non trouvé" });
       return;
     }
 
+    const updatedPost = await postRepository.read(postId);
+    res.json({
+      data: updatedPost,
+      message: "Post mis à jour avec succès",
+    });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du post:", error);
+    res.status(500).json({ error: "Erreur interne du serveur" });
+  }
+};
+
+const add = async (req: Request, res: Response) => {
+  try {
     const { title, content, image, code_snippet } = req.body;
+    if (!req.user?.userId) {
+      res.status(401).json({ error: "Utilisateur non authentifié" });
+      return;
+    }
 
-    const postData = {
-      title: title.trim(),
-      content: content?.trim() || undefined,
-      image: image?.trim() || undefined,
-      code_snippet: code_snippet?.trim() || undefined,
-      user_id: req.user.userId, // Utiliser l'ID du JWT
-    };
+    const newPostId = await postRepository.create({
+      title,
+      content,
+      image,
+      code_snippet,
+      user_id: req.user.userId,
+    });
 
-    const insertId = await postRepository.create(postData);
-
+    const newPost = await postRepository.read(newPostId);
     res.status(201).json({
-      message: "Post created successfully",
-      post: {
-        id: insertId,
-        title: postData.title,
-        content: postData.content,
-        image: postData.image,
-        code_snippet: postData.code_snippet,
-        user_id: postData.user_id,
-      },
+      data: newPost,
+      message: "Post créé avec succès",
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    console.error("Erreur lors de la création du post:", error);
+    res.status(500).json({ error: "Erreur interne du serveur" });
   }
 };
 
-// The D of BREAD - Delete operation (Remove post)
-const destroy: RequestHandler = async (req, res, next) => {
+const destroy = async (req: Request, res: Response) => {
   try {
-    const postId = Number(req.params.validatedId || req.params.id);
-    const post = req.post;
+    const postId = Number.parseInt(req.params.id, 10);
+    const success = await postRepository.delete(postId);
 
-    // Le middleware checkPostOwnership garantit que post existe
-    if (!post) {
-      res.status(500).json({
-        error: "Internal error",
-        message: "Post data not found in request",
-      });
+    if (!success) {
+      res.status(404).json({ error: "Post non trouvé" });
       return;
     }
 
-    await postRepository.delete(postId);
-
-    res.status(200).json({
-      message: "Post deleted successfully",
-      deleted_post: {
-        id: post.id,
-        title: post.title,
-        user_id: post.user_id,
-      },
-    });
-  } catch (err) {
-    next(err);
+    res.json({ message: "Post supprimé avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la suppression du post:", error);
+    res.status(500).json({ error: "Erreur interne du serveur" });
   }
 };
 
-export default { browse, read, add, edit, destroy };
+export default { browse, read, edit, add, destroy };

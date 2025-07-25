@@ -1,4 +1,12 @@
-import type { ApiResponse, PostWithAuthor } from "../types";
+import type {
+  ApiResponse,
+  AuthResponse,
+  LoginData,
+  Post,
+  PostFormData,
+  PostWithAuthor,
+  RegisterData,
+} from "../types/types";
 
 const API_BASE_URL = "http://localhost:3310";
 
@@ -11,8 +19,8 @@ class ApiService {
 
     const response = await fetch(url, {
       headers: {
-        "Content-Type": "application/json",
         ...options?.headers,
+        "Content-Type": "application/json",
       },
       ...options,
     });
@@ -35,6 +43,48 @@ class ApiService {
       `/api/posts/${id}`,
     );
     return response.data;
+  }
+
+  async login(loginData: LoginData): Promise<AuthResponse> {
+    return this.request<AuthResponse>("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(loginData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async register(data: RegisterData): Promise<AuthResponse> {
+    return this.request<AuthResponse>("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async addPost(data: PostFormData): Promise<{ message: string; post: Post }> {
+    const token = localStorage.getItem("token");
+    return this.request<{ message: string; post: Post }>("/api/posts", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+  }
+
+  async deletePost(id: number): Promise<{ message: string }> {
+    const token = localStorage.getItem("token");
+    return this.request<{ message: string }>(`/api/posts/${id}`, {
+      method: "DELETE",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
   }
 }
 

@@ -3,23 +3,67 @@ import AbstractSeeder from "./AbstractSeeder";
 class UserSeeder extends AbstractSeeder {
   constructor() {
     // Call the constructor of the parent class (AbstractSeeder) with appropriate options
-    super({ table: "user", truncate: true });
+    super({ table: "users", truncate: true });
   }
 
-  // The run method - Populate the 'user' table with fake data
+  // The run method - Populate the 'users' table with fake data
 
   run() {
-    // Generate and insert fake data into the 'user' table
-    for (let i = 0; i < 10; i += 1) {
-      // Generate fake user data
-      const fakeUser = {
-        email: this.faker.internet.email(), // Generate a fake email using faker library
-        password: this.faker.internet.password(), // Generate a fake password using faker library
-        refName: `user_${i}`, // Create a reference name for the user
-      };
+    const funnyUsers = [
+      {
+        username: "dev42",
+        email: "dev42@wildcode.com",
+        password_hash:
+          "$argon2id$v=19$m=65536,t=3,p=1$c29tZXNhbHQ$fake_hash_for_testing",
+        first_name: "Jean",
+        last_name: "Consolelog",
+        avatar: null,
+        refName: "user_1",
+      },
+      {
+        username: "css_warrior",
+        email: "css.ninja@wildcode.com",
+        password_hash:
+          "$argon2id$v=19$m=65536,t=3,p=1$c29tZXNhbHQ$fake_hash_for_testing",
+        first_name: "Marie",
+        last_name: "Flexbox",
+        avatar: null,
+        refName: "user_2",
+      },
+      {
+        username: "stack_overflow_master",
+        email: "copy.paste@wildcode.com",
+        password_hash:
+          "$argon2id$v=19$m=65536,t=3,p=1$c29tZXNhbHQ$fake_hash_for_testing",
+        first_name: "Pierre",
+        last_name: "Copypasta",
+        avatar: null,
+        refName: "user_3",
+      },
+      {
+        username: "git_commit_poet",
+        email: "git.poet@wildcode.com",
+        password_hash:
+          "$argon2id$v=19$m=65536,t=3,p=1$c29tZXNhbHQ$fake_hash_for_testing",
+        first_name: "Sophie",
+        last_name: "Versioning",
+        avatar: null,
+        refName: "user_4",
+      },
+      {
+        username: "friday_deployer",
+        email: "danger.zone@wildcode.com",
+        password_hash:
+          "$argon2id$v=19$m=65536,t=3,p=1$c29tZXNhbHQ$fake_hash_for_testing",
+        first_name: "Alex",
+        last_name: "Risktaker",
+        avatar: null,
+        refName: "user_5",
+      },
+    ];
 
-      // Insert the fakeUser data into the 'user' table
-      this.insert(fakeUser); // insert into user(email, password) values (?, ?)
+    for (const user of funnyUsers) {
+      this.insert(user);
     }
   }
 }
