@@ -22,7 +22,7 @@ const seed = async () => {
 
     for (const filePath of filePaths) {
       const { default: SeederClass } = await import(
-	`file://${path.join(fixturesPath, filePath)}`
+        `file://${path.join(fixturesPath, filePath)}`
       );
 
       const seeder = new SeederClass() as AbstractSeeder;
@@ -74,9 +74,7 @@ const seed = async () => {
     // Close the database connection
     database.end();
 
-    console.info(
-      `${process.env.DB_NAME} filled from '${path.normalize(fixturesPath)}' 🌱`,
-    );
+    console.info(`${process.env.DB_NAME} filled with mock data 🌱`);
   } catch (err) {
     const { message, stack } = err as Error;
     console.error("Error filling the database:", message, stack);

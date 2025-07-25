@@ -1,0 +1,130 @@
+.error-toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 400px;
+}
+
+.error-toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 60px;
+  width: 100%;
+}
+
+.toast-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.toast-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-message {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.toast-details {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+  line-height: 1.3;
+  word-wrap: break-word;
+}
+
+.toast-close {
+  color: inherit !important;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+/* Error variant */
+.toast-error {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: #fecaca;
+}
+
+.toast-error .toast-icon {
+  color: #f87171;
+}
+
+/* Warning variant */
+.toast-warning {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+  color: #fde68a;
+}
+
+.toast-warning .toast-icon {
+  color: #fbbf24;
+}
+
+/* Info variant */
+.toast-info {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #bfdbfe;
+}
+
+.toast-info .toast-icon {
+  color: #60a5fa;
+}
+
+/* Success variant */
+.toast-success {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #bbf7d0;
+}
+
+.toast-success .toast-icon {
+  color: #4ade80;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .error-toast-container {
+    left: 20px;
+    right: 20px;
+    max-width: none;
+  }
+
+  .error-toast {
+    padding: 12px;
+  }
+
+  .toast-message {
+    font-size: 13px;
+  }
+
+  .toast-details {
+    font-size: 11px;
+  }
+}

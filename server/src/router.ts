@@ -1,18 +1,40 @@
-import express from "express";
+import { Router } from "express";
+import {
+  checkPostOwnership,
+  optionalJWT,
+  requireJWT,
+} from "./middlewares/auth";
+import {
+  validateLoginData,
+  validatePostData,
+  validatePostId,
+  validateRegisterData,
+} from "./middlewares/validation";
+import authActions from "./modules/auth/authActions";
+import postActions from "./modules/post/postActions";
 
-const router = express.Router();
+const router = Router();
 
-/* ************************************************************************* */
-// Define Your API Routes Here
-/* ************************************************************************* */
+router.post("/api/auth/register", validateRegisterData, authActions.register);
+router.post("/api/auth/login", validateLoginData, authActions.login);
 
-// Define item-related routes
-import itemActions from "./modules/item/itemActions";
-
-router.get("/api/items", itemActions.browse);
-router.get("/api/items/:id", itemActions.read);
-router.post("/api/items", itemActions.add);
-
-/* ************************************************************************* */
+router.get("/api/posts", optionalJWT, postActions.browse);
+router.get("/api/posts/:id", validatePostId, postActions.read);
+router.post("/api/posts", requireJWT, validatePostData, postActions.add);
+router.put(
+  "/api/posts/:id",
+  requireJWT,
+  validatePostId,
+  validatePostData,
+  checkPostOwnership,
+  postActions.edit,
+);
+router.delete(
+  "/api/posts/:id",
+  requireJWT,
+  validatePostId,
+  checkPostOwnership,
+  postActions.destroy,
+);
 
 export default router;
