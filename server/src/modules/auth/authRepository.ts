@@ -24,7 +24,6 @@ type CreateUserData = {
 };
 
 class AuthRepository {
-  // The C of CRUD - Create operation
   async create(userData: CreateUserData) {
     const [result] = await databaseClient.query<Result>(
       "INSERT INTO users (username, email, password_hash, first_name, last_name, avatar) VALUES (?, ?, ?, ?, ?, ?)",
@@ -41,7 +40,6 @@ class AuthRepository {
     return result.insertId;
   }
 
-  // The R of CRUD - Read operation (specific query for registration validation)
   async findByEmailOrUsername(email: string, username: string) {
     const [rows] = await databaseClient.query<Rows>(
       "SELECT * FROM users WHERE email = ? OR username = ?",
@@ -51,7 +49,6 @@ class AuthRepository {
     return rows[0] as User | undefined;
   }
 
-  // The R of CRUD - Read operation (for login authentication)
   async findByEmail(email: string) {
     const [rows] = await databaseClient.query<Rows>(
       "SELECT * FROM users WHERE email = ?",
@@ -61,7 +58,6 @@ class AuthRepository {
     return rows[0] as User | undefined;
   }
 
-  // The R of CRUD - Read by ID (for post validation and profile features)
   async findById(id: number) {
     const [rows] = await databaseClient.query<Rows>(
       "SELECT * FROM users WHERE id = ?",
@@ -70,14 +66,6 @@ class AuthRepository {
 
     return rows[0] as User | undefined;
   }
-
-  // Future CRUD operations for authentication system:
-
-  // The U of CRUD - Update operation (for future profile updates)
-  // async update(id: number, userData: Partial<User>) { ... }
-
-  // The D of CRUD - Delete operation (for future account deletion)
-  // async delete(id: number) { ... }
 }
 
 export default new AuthRepository();

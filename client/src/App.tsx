@@ -7,7 +7,6 @@ function App() {
     <>
       <Navigation />
       <HomePage />
-      <main>{/* Contenu de l'application ici */}</main>
     </>
   );
 }

@@ -8,7 +8,7 @@ import type {
 } from "../../types/express";
 
 class PostRepository {
-  async findAllWithAuthors(): Promise<PostWithAuthor[]> {
+  async readAll(): Promise<PostWithAuthor[]> {
     const [rows] = await databaseClient.query<Rows>(
       `SELECT
         p.id,
@@ -48,7 +48,7 @@ class PostRepository {
     }));
   }
 
-  async findById(id: number): Promise<Post | undefined> {
+  async read(id: number): Promise<Post | undefined> {
     const [rows] = await databaseClient.query<Rows>(
       "SELECT * FROM posts WHERE id = ?",
       [id],
@@ -57,8 +57,11 @@ class PostRepository {
     return rows[0] as Post | undefined;
   }
 
-  async update(id: number, postData: Partial<CreatePostData>): Promise<void> {
-    await databaseClient.query<Result>(
+  async update(
+    id: number,
+    postData: Partial<CreatePostData>,
+  ): Promise<boolean> {
+    const [result] = await databaseClient.query<Result>(
       "UPDATE posts SET title = ?, content = ?, image = ?, code_snippet = ? WHERE id = ?",
       [
         postData.title,
@@ -68,6 +71,8 @@ class PostRepository {
         id,
       ],
     );
+
+    return result.affectedRows > 0;
   }
 
   async create(postData: CreatePostData): Promise<number> {
@@ -84,8 +89,14 @@ class PostRepository {
 
     return result.insertId;
   }
-  async delete(id: number): Promise<void> {
-    await databaseClient.query<Result>("DELETE FROM posts WHERE id = ?", [id]);
+
+  async delete(id: number): Promise<boolean> {
+    const [result] = await databaseClient.query<Result>(
+      "DELETE FROM posts WHERE id = ?",
+      [id],
+    );
+
+    return result.affectedRows > 0;
   }
 }
 

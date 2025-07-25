@@ -84,7 +84,7 @@ export const checkPostOwnership = async (
 
     const postId = Number(req.params.validatedId || req.params.id);
 
-    const post = await postRepository.findById(postId);
+    const post = await postRepository.read(postId);
     if (!post) {
       res.status(404).json({
         error: "Post not found",

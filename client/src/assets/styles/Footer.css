@@ -181,7 +181,6 @@
   animation: pulse 0.3s ease-in-out;
 }
 
-/* Tablet*/
 @media (min-width: 768px) {
   .footer {
     padding: 2.5rem 0 1.5rem;
@@ -230,7 +229,6 @@
   }
 }
 
-/* Desktop */
 @media (min-width: 1024px) {
   .footer {
     padding: 3rem 0 1.5rem;
