@@ -64,7 +64,7 @@ Wild Code Media is a modern social network dedicated to developers and digital c
 
 5. **Open your browser**
    ```
-   http://localhost:5173
+   http://localhost:3000
    ```
 
 ## 📁 Project Structure
