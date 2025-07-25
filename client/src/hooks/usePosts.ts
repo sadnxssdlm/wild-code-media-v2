@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useError } from "../contexts/ErrorContext";
 import { apiService } from "../services/api";
-import type { PostWithAuthor } from "../types/types";
+import type { PostWithAuthor } from "../types";
 
 export const usePosts = () => {
   const [posts, setPosts] = useState<PostWithAuthor[]>([]);

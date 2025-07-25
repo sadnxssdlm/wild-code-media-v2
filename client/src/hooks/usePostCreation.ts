@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useError } from "../contexts/ErrorContext";
 import { apiService } from "../services/api";
-import type { PostFormData, PostWithAuthor } from "../types/types";
+import type { PostFormData, PostWithAuthor } from "../types";
 
 export const usePostCreation = (
   onPostCreated: (post: PostWithAuthor) => void,

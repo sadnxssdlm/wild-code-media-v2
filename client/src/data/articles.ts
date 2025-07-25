@@ -1,7 +1,7 @@
 import article1 from "../assets/images/articles/article-1.png";
 import article2 from "../assets/images/articles/article-2.png";
 import article3 from "../assets/images/articles/article-3.png";
-import type { Article } from "../types/types";
+import type { Article } from "../types";
 
 export const articlesData: Article[] = [
   {
